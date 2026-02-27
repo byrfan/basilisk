@@ -12,11 +12,6 @@ start:
     mov ss, ax
     mov sp, 0x7C00
 
-    ; print B to show bootloader runs
-    mov ah, 0x0E
-    mov al, 'B'
-    int 0x10
-
     call load_kernel
     jmp switch_to_pm
 
@@ -28,7 +23,7 @@ load_kernel:
     mov es, ax
 
     mov ah, 0x02        ; BIOS read sectors
-    mov al, 2           ; read 20 sector (adjust as needed)
+    mov al, 2           ; read 2 sector 
     mov ch, 0
     mov cl, 2
     mov dh, 0
