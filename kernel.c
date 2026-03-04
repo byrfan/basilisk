@@ -1,27 +1,41 @@
-void delay() {
-    for (volatile int i=0; i<1000000; i++);
-}
+#include "util.h"
+#include "snake.h"
 
-void clear_screen() {
-    volatile unsigned short* vga = (volatile unsigned short*)0xB8000;
-    
-    // 80 columns * 25 rows = 2000 total characters
-    unsigned short blank = (0x0F << 8) | ' '; // Black background, White text, Space char
-
-    for (int i = 0; i < 80 * 25; i++) {
-        vga[i] = blank;
-    }
+void init_game() {
+    draw_border();
+    draw_score(0);
+    draw_string(78, 3, "*", 0x0F);
 }
 
 void run_game() {
-    clear_screen();
-    volatile unsigned short* vga = (volatile unsigned short*)0xB8000;
-    int pos = 0;
+    kernel_init();
+    init_game();   
+    unsigned long last_tick = 0;
 
-    while(1) {
-        vga[pos] = (0x0E << 8) | '*'; // yellow *
-        delay();
-        vga[pos] = (0x00 << 8) | ' '; // erase
-        pos = (pos + 1) % 80;
+    Snake snake = {
+        .length = DEFAULT_SNAKE_LEN,
+        .direction = DIR_LEFT,
+        .x = DEFAULT_SNAKE_X, // implement generate x
+        .y = DEFAULT_SNAKE_Y, // implement generate y
+        .alive = true
+    };
+
+    init_entropy();
+    Fruit fruit;
+    spawn_fruit(&fruit);
+
+    while(snake.alive) {
+        unsigned long now = get_ticks();
+        if (now - last_tick >= TICK_SPEED) {
+            last_tick = now;
+
+            draw_fruit(&fruit);
+            change_direction(&snake, current_direction);
+            move_snake_tick(&snake);
+            eat_fruit(&snake, &fruit);
+            persist_fruit(&fruit);
+
+            draw_score(snake.length - DEFAULT_SNAKE_LEN);
+        }
     }
 }

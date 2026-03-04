@@ -23,7 +23,7 @@ load_kernel:
     mov es, ax
 
     mov ah, 0x02        ; BIOS read sectors
-    mov al, 2           ; read 2 sector 
+    mov al, 20           ; read 2 sector 
     mov ch, 0
     mov cl, 2
     mov dh, 0
