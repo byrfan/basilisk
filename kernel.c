@@ -10,6 +10,7 @@ void init_game() {
 void run_game() {
     kernel_init();
     init_game();   
+    init_entropy();
     unsigned long last_tick = 0;
 
     Snake snake = {
@@ -20,9 +21,10 @@ void run_game() {
         .alive = true
     };
 
-    init_entropy();
     Fruit fruit;
     spawn_fruit(&fruit);
+
+    draw_snake(&snake);
 
     while(snake.alive) {
         unsigned long now = get_ticks();
@@ -32,6 +34,7 @@ void run_game() {
             draw_fruit(&fruit);
             change_direction(&snake, current_direction);
             move_snake_tick(&snake);
+            check_death(&snake);  
             eat_fruit(&snake, &fruit);
             persist_fruit(&fruit);
 

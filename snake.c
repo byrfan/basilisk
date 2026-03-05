@@ -63,7 +63,7 @@ void update_snake(Snake *s) {
 }
 
 void self_collision(Snake* s) {
-    for(size_t i=0; i<s->length; i++) {
+    for(size_t i=1; i<s->length; i++) {
         if ((s->x[0] == s->x[i]) && (s->y[0] == s->y[i]))     
             s->alive=false;
     } 
@@ -81,6 +81,13 @@ void border_collision(Snake* s) {
 void check_death(Snake* s) {
     self_collision(s);
     border_collision(s);
+}
+
+void draw_snake(Snake* s) {
+    draw_char(s->x[0], s->y[0], HEAD, 0x0F);
+
+    for(size_t i=1; i<s->length; i++)
+        draw_char(s->x[i], s->y[i], BODY, 0x0F);
 }
 
 void move_snake_tick(Snake *s) {

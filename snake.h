@@ -43,5 +43,6 @@ void spawn_fruit(Fruit* f);
 void persist_fruit(Fruit* f);
 void draw_fruit(Fruit* f);
 void check_death(Snake* s);
+void draw_snake(Snake* s);
 
 #endif
