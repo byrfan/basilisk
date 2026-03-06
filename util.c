@@ -164,7 +164,7 @@ void kernel_init() {
     idt_init();
     pic_remap();
     pit_init();
-    SET_INTERUPT;
+    SET_INTERRUPT;
 
     clear_screen();
     hide_cursor();

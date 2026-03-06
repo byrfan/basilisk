@@ -7,7 +7,7 @@ typedef unsigned char bool_t;
 #define false 0
 
 #define KEYBOARD_BUFFER_SIZE 256
-#define SET_INTERUPT  __asm__ volatile ("sti")
+#define SET_INTERRUPT  __asm__ volatile ("sti")
 extern void irq0_stub();
 extern void irq1_stub();
 
